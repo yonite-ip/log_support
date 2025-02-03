@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreeSWITCH Call Flow Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>FreeSWITCH Call Flow Analyzer</h1>
+        <p>Enter a dialed number to analyze the call flow.</p>
+
+	<form method="POST" action="/logs/">
+	    <label for="number">Dialed Number:</label>
+            <input type="text" id="number" name="number" required value="{{ number }}">
+            <button type="submit">Analyze Call Flow</button>
+        </form>
+
+        {% if flow %}
+            <h2>Call Flow Steps</h2>
+            <ul class="timeline">
+                {% for step in flow %}
+                    <li>
+                        <span class="event">{{ step.event }}</span>
+                        <span class="destination">→ Destination: {{ step.destination }}</span>
+                        <p class="log">{{ step.log }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% elif number %}
+            <p class="error">No call flow data found for this number.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+
+
